@@ -40,7 +40,7 @@ public class ViewerService {
 
 
 
-    public Page<Ticket> findPaginated(Pageable pageable, List<Ticket> tickets) {
+    public Page<Ticket> getPaginatedTicketList(Pageable pageable, List<Ticket> tickets) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;

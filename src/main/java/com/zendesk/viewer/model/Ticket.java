@@ -50,21 +50,6 @@ public class Ticket {
 
     }
 
-    public Ticket(String assigneeId, LocalDateTime createdAt, String description, String groupId,
-                  String requestorId, LocalDateTime updatedAt,
-                  String priority, List<String> tags, String subject, int id) {
-        this.assigneeId = assigneeId;
-        this.createdAt = createdAt;
-        this.description = description;
-        this.groupId = groupId;
-        this.requesterId = requestorId;
-        this.updatedAt = updatedAt;
-        this.priority = priority;
-        this.tags = tags;
-        this.subject = subject;
-        this.id = id;
-    }
-
 
 
     public String getAssigneeId() {

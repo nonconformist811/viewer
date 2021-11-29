@@ -43,7 +43,7 @@ public class ViewerController {
 
         int pageSize = size.orElse(25);
 
-        Page<Ticket> ticketPage = viewerService.findPaginated(PageRequest.of(0, pageSize), ticketList);
+        Page<Ticket> ticketPage = viewerService.getPaginatedTicketList(PageRequest.of(0, pageSize), ticketList);
 
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
