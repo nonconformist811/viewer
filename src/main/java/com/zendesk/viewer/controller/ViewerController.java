@@ -1,5 +1,6 @@
 package com.zendesk.viewer.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zendesk.viewer.model.Ticket;
 import com.zendesk.viewer.service.ViewerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,14 @@ public class ViewerController {
     @GetMapping("/ticketViewer")
     public String listAllTickets(Model model,
                                  @RequestParam("page") Optional<Integer> page,
-                                 @RequestParam("size") Optional<Integer> size) {
+                                 @RequestParam("size") Optional<Integer> size) throws JsonProcessingException {
+
         int currentPage = page.orElse(1);
-
-
+        int pageSize = size.orElse(25);
 
         ticketList = viewerService.getTicketList(currentPage);
         int totalCount  = viewerService.getTotalTickets(currentPage);
         int totalPages = totalCount/25 + (totalCount%25==0?0 :1);
-
-        int pageSize = size.orElse(25);
 
         Page<Ticket> ticketPage = viewerService.getPaginatedTicketList(PageRequest.of(0, pageSize), ticketList);
 
@@ -63,7 +62,7 @@ public class ViewerController {
 
 
     @GetMapping("/ticketViewer/tickets/{ticketId}")
-    public String getIndividualTicket(Model model, @PathVariable Integer ticketId) throws IOException {
+    public String getIndividualTicket(Model model, @PathVariable Integer ticketId) {
 
 
         Ticket ticket = null;

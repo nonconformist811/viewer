@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+<style>
+    .box { height: 50px;  width: 100%; }
+#first { margin-top: 20px; }
+h1.box {  margin-bottom: 50px;  }
+</style>
 <head>
     <meta charset="UTF-8">
     <title >Individual Ticket</title>
 </head>
+
+
 <body>
 
-<h1>Ticket List Viewer</h1>
+<h1>Zendesk Ticket List Viewer</h1>
 
 <h2 th:text = "'Ticket #' + ${ticket.id}">Ticket</h2>
-<div th:text=${ticket.subject}>
-    <a th:href="@{/ticketViewer(size=${ticketPage.size}, page=${pageNumber})}"
-       th:text=${pageNumber}
-       th:class="${pageNumber==ticketPage.number + 1} ? active"></a>
-</div>
+<h3 th:text = "'Requester: ' + ${ticket.requesterId}"></h3>
+<h4 class="box" th:text=${ticket.subject}></h4>
 
-<div th:text = ${ticket.description}>
+<div class = "box" th:text = ${ticket.description}>
 
 </div>
 

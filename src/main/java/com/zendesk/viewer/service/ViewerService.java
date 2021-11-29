@@ -1,5 +1,6 @@
 package com.zendesk.viewer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.viewer.model.Ticket;
@@ -14,12 +15,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @PropertySource(value="classpath:application.properties")
@@ -74,11 +75,10 @@ public class ViewerService {
         return httpHeaders;
     }
 
-    public List<Ticket> getTicketList(int currentPage){
+    public List<Ticket> getTicketList(int currentPage) throws JsonProcessingException {
 
 
         String url = baseUrl + "?per_page="+defaultPageSize+"&page="+currentPage;
-        System.out.println(url);
 
         List<Ticket> list = new ArrayList<>();
 
@@ -98,9 +98,6 @@ public class ViewerService {
             JSONObject jsonObject = new JSONObject(responseEntity.getBody());
             JSONArray ticketList = (JSONArray) jsonObject.get("tickets");
 
-            System.out.println(ticketList.length());
-
-
             list = getTicketListFromJsonArray(ticketList);
 
 
@@ -110,7 +107,6 @@ public class ViewerService {
     public Integer getTotalTickets(int currentPage){
 
         String url = baseUrl + "?per_page="+defaultPageSize+"&page="+currentPage;
-        System.out.println(url);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -128,7 +124,7 @@ public class ViewerService {
        return count;
     }
 
-    private List<Ticket> getTicketListFromJsonArray(JSONArray ticketJsonArray){
+    private List<Ticket> getTicketListFromJsonArray(JSONArray ticketJsonArray) throws JsonProcessingException {
 
         List<Ticket> ticketList= new ArrayList<>();
 
@@ -136,15 +132,12 @@ public class ViewerService {
 
         objectMapper.registerModule(new JavaTimeModule());
 
-        for(int i=0; i<ticketJsonArray.length(); i++){
+        for(int i=0; i<ticketJsonArray.length(); i++) {
 
-
-            try {
-                ticketList.add( objectMapper.readValue(ticketJsonArray.getJSONObject(i).toString(), Ticket.class));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ticketList.add(objectMapper.readValue(ticketJsonArray.getJSONObject(i).toString(), Ticket.class));
         }
+
+
 
         return ticketList;
 

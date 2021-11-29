@@ -31,7 +31,7 @@ th, td {
 	border-radius: 2px;
 }
 tr:hover {
-    background-color: red;
+    background-color: #87CEEB;
 }
 
 </style>
@@ -53,12 +53,19 @@ tr:hover {
     <title>Ticket List Viewer</title>
 </head>
 <body>
-<h1>Ticket List Viewer</h1>
+<h1>Zendesk Ticket List Viewer</h1>
 <table border="0">
     <thead>
     <tr>
-        <th th:text="#{msg.requesterId}" />
+        <th th:text="#{msg.id}" />
         <th th:text="#{msg.subject}" />
+        <th th:text="#{msg.requesterId}" />
+        <th th:text="#{msg.createdAt}" />
+        <th th:text="#{msg.status}" />
+        <th th:text="#{msg.updatedAt}" />
+        <th th:text="#{msg.priority}" />
+
+
     </tr>
     </thead>
     <tbody>
@@ -66,8 +73,13 @@ tr:hover {
         style="cursor:pointer"
         th:onclick="'javascript:rowClicked(\'' + ${ticket.id} + '\');'">
         <div  class="hover-highlight">
-            <td th:text="${ticket.requesterId}" />
+            <td th:text="${ticket.id}" />
             <td th:text="${ticket.subject}" />
+            <td th:text="${ticket.requesterId}" />
+            <td th:text="${#temporals.monthNameShort(ticket.createdAt)} + ' ' + ${#temporals.day(ticket.createdAt)}" />
+            <td th:text="${ticket.status}" />
+            <td th:text="${#temporals.monthNameShort(ticket.updatedAt)} + ' ' + ${#temporals.day(ticket.updatedAt)}" />
+            <td th:text="${ticket.priority}" />
         </div>
     </tr>
     </tbody>

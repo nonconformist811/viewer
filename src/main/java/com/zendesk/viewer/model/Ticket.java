@@ -38,6 +38,9 @@ public class Ticket {
     @JsonProperty("priority")
     private String priority;
 
+    @JsonProperty("status")
+    private String status;
+
     @JsonProperty("tags")
     private List<String> tags;
 
@@ -130,6 +133,14 @@ public class Ticket {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 

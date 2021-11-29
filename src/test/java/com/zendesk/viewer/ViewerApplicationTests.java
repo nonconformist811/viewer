@@ -1,46 +1,54 @@
 package com.zendesk.viewer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zendesk.viewer.model.Ticket;
 import com.zendesk.viewer.service.ViewerService;
 import io.restassured.http.ContentType;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import static org.junit.jupiter.api.Assertions.*;
-
-
-import javax.servlet.Filter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
+@AutoConfigureMockMvc
 class ViewerApplicationTests {
 	
 
 	@Autowired
 	private ViewerService viewerService;
 
-	
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Autowired
+	private WebApplicationContext webApplicationContext;
+
+	@Before
+	public void init() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+	}
+
 
 	@Test
 	public void testListAllTickets() throws Exception {
@@ -50,8 +58,9 @@ class ViewerApplicationTests {
 				get("/ticketViewer").
 				then().
 				assertThat().
-				statusCode(200).assertThat()
-				.contentType(ContentType.HTML);
+				statusCode(200).
+				assertThat().
+				contentType(ContentType.HTML);
 	}
 
 	@Test
@@ -67,7 +76,7 @@ class ViewerApplicationTests {
 	}
 
 	@Test
-	public void testGetTickets() {
+	public void testGetTickets() throws JsonProcessingException {
 
 		List<Ticket> ticketList = viewerService.getTicketList(1);
 		assertEquals(ticketList.size(),25);
@@ -78,7 +87,7 @@ class ViewerApplicationTests {
 	public void testGetTotalTickets() {
 
 		int ticketCount = viewerService.getTotalTickets(1);
-		assertEquals(ticketCount,102);
+		assertEquals(ticketCount,99);
 
 	}
 
@@ -90,8 +99,19 @@ class ViewerApplicationTests {
 		assertEquals(ticketPage.getTotalPages(),0);
 	}
 
+	@Test
+	public void testTicketViewer() throws Exception {
 
+		mockMvc.perform(get("/ticketViewer")).andExpect(status().isOk()).andExpect(view().name("listTickets.html"));
 
+	}
+
+	@Test
+	public void testIndividualTicketViewer() throws Exception {
+
+		mockMvc.perform(get("/ticketViewer/tickets/1")).andExpect(status().isOk()).andExpect(view().name("displayIndividualTicket.html"));
+
+	}
 
 
 
