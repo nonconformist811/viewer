@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<style>
+.pagination {
+	display: inline-block;
+}
+
+.pagination a {
+	color: black;
+	float: left;
+	padding: 5px 5px;
+	text-decoration: none;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+
+
+.pagination a.active {
+	background-color: gray;
+	color: white;
+	border-radius: 2px;
+}
+tr:hover {
+    background-color: red;
+}
+
+</style>
+<script>
+    function rowClicked(value) {
+        location.href = "/ticketViewer/tickets/" + value;
+    }
+</script>
+
+<script type="text/javascript">
+    document.getElementById('onclick').onclick= function() {
+        var s= this.parentNode.style;
+        s.backgroundColor='#E5F7C7';
+        s.border='solid blue 1px;';
+    };
+</script>
+
+<head>
+    <title>Ticket List Viewer</title>
+</head>
+<body>
+<h1>Ticket List Viewer</h1>
+<table border="0">
+    <thead>
+    <tr>
+        <th th:text="#{msg.requesterId}" />
+        <th th:text="#{msg.subject}" />
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:id = "onclick" th:each="ticket, iStat : ${ticketPage.content}"
+        style="cursor:pointer"
+        th:onclick="'javascript:rowClicked(\'' + ${ticket.id} + '\');'">
+        <div  class="hover-highlight">
+            <td th:text="${ticket.requesterId}" />
+            <td th:text="${ticket.subject}" />
+        </div>
+    </tr>
+    </tbody>
+</table>
+
+
+<div th:if="${totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/ticketViewer(size=${size}, page=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="active"></a>
+</div>
+
+
+
+
+
+</body>
+</html>

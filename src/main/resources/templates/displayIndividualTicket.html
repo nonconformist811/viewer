@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title >Individual Ticket</title>
+</head>
+<body>
+
+<h1>Ticket List Viewer</h1>
+
+<h2 th:text = "'Ticket #' + ${ticket.id}">Ticket</h2>
+<div th:text=${ticket.subject}>
+    <a th:href="@{/ticketViewer(size=${ticketPage.size}, page=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="${pageNumber==ticketPage.number + 1} ? active"></a>
+</div>
+
+<div th:text = ${ticket.description}>
+
+</div>
+
+<div>
+    <p>
+        <a th:href="@{/ticketViewer}" th:text="#{msg.home}"></a>
+    </p>
+</div>
+
+</body>
+</html>
