@@ -1,7 +1,7 @@
 # viewer
 Zendesk Ticket Viewer 
 
-# Zendesk Sample Tickets Viewer with Spring Boot and Thymelead 
+# Zendesk Sample Tickets Viewer with Spring Boot and Thymeleaf
 
 ## Steps to Setup
 
@@ -39,9 +39,9 @@ The app defines following  APIs.
 
 **1. Page will take less time to get loaded since only 25 tickets are fetched at a time**
 
-**2. There are few use cases only where user wants to load all the tickets **
+**2. There are few use cases only where user wants to load all the tickets**
 
-**3. If time permits, I would have used Redis for storing tickets in-memory **
+**3. If time permits, I would have used Redis for storing tickets in-memory**
 
 
 
