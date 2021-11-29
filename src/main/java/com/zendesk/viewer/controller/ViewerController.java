@@ -26,10 +26,6 @@ public class ViewerController {
 
     private List<Ticket> ticketList ;
 
-    public static final String restServiceUrl = "https://zccandrew3370.zendesk.com/api/v2/tickets.json";
-
-
-
     @GetMapping("/ticketViewer")
     public String listAllTickets(Model model,
                                  @RequestParam("page") Optional<Integer> page,
