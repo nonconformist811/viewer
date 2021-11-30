@@ -8,7 +8,7 @@ Zendesk Ticket Viewer
 **1. Clone the application**
 
 ```bash
-https://github.com/givanthak/spring-boot-rest-api-tutorial.git
+https://github.com/nonconformist811/viewer.git
 ```
 
 **2. Build and run the app using maven**
